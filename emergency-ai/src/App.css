@@ -1,0 +1,56 @@
+body {
+  background: #0f172a;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+.app {
+  padding: 30px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.card {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+select,
+button {
+  padding: 10px;
+}
+
+.map-card,
+.result {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.room {
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+}
+
+.safe {
+  background: green;
+}
+
+.danger {
+  background: crimson;
+}
+
+.warning {
+  background: orange;
+}
+
+.arrow {
+  text-align: center;
+  font-size: 20px;
+}

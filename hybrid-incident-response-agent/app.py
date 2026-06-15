@@ -17,7 +17,7 @@ from agent.reasoner import get_path_cost
 # ─────────────────────────────────────────────
 st.set_page_config(
     page_title="Emergency Command Center",
-    page_icon="🚨",
+    page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -28,20 +28,21 @@ st.set_page_config(
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif !important;
-    background: #020617 !important;
-    color: #F1F5F9 !important;
+    background: #EEE3CB !important;
+    color: #5c4b45 !important;
 }
 
 /* ── Remove default streamlit chrome ── */
-.stApp { background: #020617 !important; }
+.stApp { background: #EEE3CB !important; }
 section[data-testid="stSidebar"] {
-    background: #0F172A !important;
-    border-right: 1px solid rgba(255,255,255,0.06) !important;
+    background: #D7C0AE !important;
+    border-right: 1px solid rgba(150,126,118,0.2) !important;
 }
 section[data-testid="stSidebar"] > div { padding-top: 0 !important; }
 .block-container { padding: 0 1.5rem 2rem 1.5rem !important; max-width: 100% !important; }
@@ -50,13 +51,13 @@ header[data-testid="stHeader"] { background: transparent !important; }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: #020617; }
-::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 2px; }
+::-webkit-scrollbar-track { background: #EEE3CB; }
+::-webkit-scrollbar-thumb { background: #967E76; border-radius: 2px; }
 
 /* ── Command Header ── */
 .cmd-header {
-    background: linear-gradient(135deg, #0F172A 0%, #0d1f3c 100%);
-    border-bottom: 1px solid rgba(59,130,246,0.2);
+    background: #D7C0AE;
+    border-bottom: 2px solid #B7C4CF;
     padding: 0.85rem 2rem;
     display: flex;
     align-items: center;
@@ -68,17 +69,17 @@ header[data-testid="stHeader"] { background: transparent !important; }
     align-items: center;
     gap: 0.7rem;
 }
-.cmd-logo-icon { font-size: 1.5rem; }
+.cmd-logo-icon { font-size: 1.5rem; color: #5c4b45; }
 .cmd-logo-text {
     font-size: 1.05rem;
     font-weight: 700;
     letter-spacing: 0.08em;
-    color: #F1F5F9;
+    color: #5c4b45;
     text-transform: uppercase;
 }
 .cmd-logo-sub {
     font-size: 0.62rem;
-    color: #64748B;
+    color: #967E76;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-top: 1px;
@@ -91,17 +92,16 @@ header[data-testid="stHeader"] { background: transparent !important; }
     align-items: center;
 }
 .pill {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
+    background: #B7C4CF;
+    border: 1px solid rgba(150,126,118,0.2);
+    border-radius: 4px;
     padding: 0.45rem 1rem;
     text-align: center;
     min-width: 120px;
-    backdrop-filter: blur(8px);
 }
 .pill-label {
     font-size: 0.6rem;
-    color: #64748B;
+    color: #5c4b45;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     margin-bottom: 2px;
@@ -109,28 +109,35 @@ header[data-testid="stHeader"] { background: transparent !important; }
 .pill-value {
     font-size: 0.88rem;
     font-weight: 600;
-    color: #F1F5F9;
+    color: #5c4b45;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
 }
-.pill-green  { border-color: rgba(34,197,94,0.35);  background: rgba(34,197,94,0.08); }
-.pill-yellow { border-color: rgba(245,158,11,0.35); background: rgba(245,158,11,0.08); }
-.pill-orange { border-color: rgba(249,115,22,0.35); background: rgba(249,115,22,0.08); }
-.pill-red    { border-color: rgba(239,68,68,0.35);  background: rgba(239,68,68,0.08); }
-.pill-blue   { border-color: rgba(59,130,246,0.35); background: rgba(59,130,246,0.08); }
-.pill-green  .pill-value { color: #22C55E; }
-.pill-yellow .pill-value { color: #F59E0B; }
-.pill-orange .pill-value { color: #F97316; }
-.pill-red    .pill-value { color: #EF4444; }
-.pill-blue   .pill-value { color: #60A5FA; }
+.pill-value .material-symbols-outlined { font-size: 1.1rem; }
+
+.pill-green  { border-bottom: 3px solid #6B8E6B; }
+.pill-yellow { border-bottom: 3px solid #C18B47; }
+.pill-orange { border-bottom: 3px solid #C18B47; }
+.pill-red    { border-bottom: 3px solid #A05252; }
+.pill-blue   { border-bottom: 3px solid #5c4b45; }
+
+.pill-green  .pill-value { color: #4A6B4A; }
+.pill-yellow .pill-value { color: #A06D2E; }
+.pill-orange .pill-value { color: #A06D2E; }
+.pill-red    .pill-value { color: #8B3A3A; }
+.pill-blue   .pill-value { color: #5c4b45; }
 
 /* ── Sidebar elements ── */
 .sidebar-section-title {
     font-size: 0.65rem;
     font-weight: 700;
-    color: #64748B;
+    color: #5c4b45;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     padding: 1.2rem 0 0.5rem 0;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(150,126,118,0.3);
     margin-top: 0.5rem;
 }
 .sidebar-section-title:first-of-type { border-top: none; padding-top: 0.5rem; }
@@ -140,32 +147,31 @@ header[data-testid="stHeader"] { background: transparent !important; }
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
+    background: #B7C4CF;
+    border: 1px solid rgba(150,126,118,0.2);
+    border-radius: 4px;
     padding: 0.5rem 0.75rem;
     margin-bottom: 0.4rem;
     cursor: pointer;
     transition: all 0.2s;
     font-size: 0.8rem;
-    color: #CBD5E1;
+    color: #5c4b45;
 }
-.preset-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); }
-.preset-card.active { border-color: rgba(59,130,246,0.6); background: rgba(59,130,246,0.1); color: #F1F5F9; }
+.preset-card:hover { background: #A9B8C5; }
+.preset-card.active { border-color: #5c4b45; background: #9CAEBC; font-weight: 600; }
 
 /* ── Panel cards ── */
 .panel-card {
-    background: rgba(15,23,42,0.8);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 12px;
+    background: #D7C0AE;
+    border: 1px solid rgba(150,126,118,0.3);
+    border-radius: 6px;
     padding: 1.1rem 1.25rem;
     margin-bottom: 0.85rem;
-    backdrop-filter: blur(8px);
 }
 .panel-card-title {
     font-size: 0.68rem;
     font-weight: 700;
-    color: #64748B;
+    color: #5c4b45;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     margin-bottom: 0.85rem;
@@ -176,26 +182,27 @@ header[data-testid="stHeader"] { background: transparent !important; }
 
 /* ── Algorithm cards ── */
 .algo-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 10px;
+    background: #B7C4CF;
+    border: 1px solid rgba(150,126,118,0.2);
+    border-radius: 4px;
     padding: 0.7rem 0.9rem;
     margin-bottom: 0.5rem;
     transition: all 0.2s;
 }
 .algo-card.selected {
-    border-color: rgba(59,130,246,0.5);
-    background: rgba(59,130,246,0.07);
-    box-shadow: 0 0 16px rgba(59,130,246,0.12);
+    border-color: #5c4b45;
+    background: #A9B8C5;
+    border-left: 4px solid #5c4b45;
 }
 .algo-card.winner {
-    border-color: rgba(34,197,94,0.5);
-    background: rgba(34,197,94,0.06);
+    border-color: #4A6B4A;
+    background: #A9B8C5;
+    border-left: 4px solid #4A6B4A;
 }
 .algo-name {
     font-size: 0.78rem;
     font-weight: 700;
-    color: #E2E8F0;
+    color: #5c4b45;
     margin-bottom: 0.4rem;
     display: flex;
     align-items: center;
@@ -207,19 +214,19 @@ header[data-testid="stHeader"] { background: transparent !important; }
     letter-spacing: 0.08em;
     text-transform: uppercase;
     padding: 2px 6px;
-    border-radius: 4px;
+    border-radius: 2px;
 }
-.badge-active  { background: rgba(59,130,246,0.25); color: #60A5FA; }
-.badge-winner  { background: rgba(34,197,94,0.25);  color: #22C55E; }
-.badge-nopath  { background: rgba(239,68,68,0.2);   color: #F87171; }
+.badge-active  { background: rgba(92,75,69,0.15); color: #5c4b45; }
+.badge-winner  { background: rgba(74,107,74,0.15);  color: #4A6B4A; }
+.badge-nopath  { background: rgba(139,58,58,0.15);   color: #8B3A3A; }
 .algo-metrics {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.3rem 0.6rem;
     font-size: 0.72rem;
 }
-.algo-metric-item { color: #94A3B8; }
-.algo-metric-item span { color: #CBD5E1; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+.algo-metric-item { color: #967E76; }
+.algo-metric-item span { color: #5c4b45; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
 
 /* ── Stat row ── */
 .stat-row {
@@ -227,43 +234,43 @@ header[data-testid="stHeader"] { background: transparent !important; }
     justify-content: space-between;
     align-items: center;
     padding: 0.4rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(150,126,118,0.2);
     font-size: 0.78rem;
 }
 .stat-row:last-child { border-bottom: none; }
-.stat-row-label { color: #64748B; }
-.stat-row-value { color: #E2E8F0; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+.stat-row-label { color: #967E76; }
+.stat-row-value { color: #5c4b45; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
 
 /* ── Route path display ── */
 .route-path {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem;
-    color: #22C55E;
-    background: rgba(34,197,94,0.06);
-    border: 1px solid rgba(34,197,94,0.15);
-    border-radius: 6px;
+    color: #4A6B4A;
+    background: rgba(107,142,107,0.1);
+    border: 1px solid rgba(107,142,107,0.3);
+    border-radius: 4px;
     padding: 0.5rem 0.7rem;
     word-break: break-all;
     margin-top: 0.4rem;
 }
 .route-path.nopath {
-    color: #EF4444;
-    background: rgba(239,68,68,0.06);
-    border-color: rgba(239,68,68,0.15);
+    color: #8B3A3A;
+    background: rgba(160,82,82,0.1);
+    border-color: rgba(160,82,82,0.3);
 }
 
 /* ── Event timeline ── */
 .timeline-outer {
-    background: rgba(15,23,42,0.8);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 10px;
+    background: #D7C0AE;
+    border: 1px solid rgba(150,126,118,0.3);
+    border-radius: 6px;
     padding: 0.75rem 1rem;
     margin-top: 0.75rem;
 }
 .timeline-title {
     font-size: 0.62rem;
     font-weight: 700;
-    color: #475569;
+    color: #5c4b45;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     margin-bottom: 0.6rem;
@@ -277,41 +284,36 @@ header[data-testid="stHeader"] { background: transparent !important; }
 .timeline-scroll::-webkit-scrollbar { height: 3px; }
 .evt-chip {
     flex-shrink: 0;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 8px;
+    background: #B7C4CF;
+    border: 1px solid rgba(150,126,118,0.2);
+    border-radius: 4px;
     padding: 0.4rem 0.65rem;
-    min-width: 130px;
+    min-width: 140px;
 }
-.evt-time { font-size: 0.6rem; color: #475569; font-family: 'JetBrains Mono', monospace; margin-bottom: 2px; }
-.evt-text { font-size: 0.72rem; color: #94A3B8; }
-.evt-chip.fire    { border-color: rgba(239,68,68,0.3);  background: rgba(239,68,68,0.07);  }
-.evt-chip.gas     { border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.07); }
-.evt-chip.crowd   { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.07); }
-.evt-chip.move    { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.07); }
-.evt-chip.success { border-color: rgba(34,197,94,0.3);  background: rgba(34,197,94,0.07);  }
-.evt-chip.block   { border-color: rgba(239,68,68,0.3);  background: rgba(239,68,68,0.07);  }
-.evt-chip.route   { border-color: rgba(34,197,94,0.25); background: rgba(34,197,94,0.05);  }
-.evt-chip.fire .evt-text    { color: #FCA5A5; }
-.evt-chip.gas .evt-text     { color: #FED7AA; }
-.evt-chip.crowd .evt-text   { color: #FDE68A; }
-.evt-chip.move .evt-text    { color: #93C5FD; }
-.evt-chip.success .evt-text { color: #86EFAC; }
-.evt-chip.block .evt-text   { color: #FCA5A5; }
-.evt-chip.route .evt-text   { color: #86EFAC; }
+.evt-time { font-size: 0.6rem; color: #967E76; font-family: 'JetBrains Mono', monospace; margin-bottom: 2px; }
+.evt-text { font-size: 0.72rem; color: #5c4b45; font-weight: 500; }
+
+.evt-chip.fire    { border-left: 3px solid #A05252; }
+.evt-chip.gas     { border-left: 3px solid #C18B47; }
+.evt-chip.crowd   { border-left: 3px solid #C18B47; }
+.evt-chip.terror  { border-left: 3px solid #A05252; }
+.evt-chip.move    { border-left: 3px solid #967E76; }
+.evt-chip.success { border-left: 3px solid #6B8E6B; }
+.evt-chip.block   { border-left: 3px solid #A05252; }
+.evt-chip.route   { border-left: 3px solid #6B8E6B; }
 
 /* ── Bottom algo comparison ── */
 .compare-card {
-    background: rgba(15,23,42,0.7);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 12px;
+    background: #D7C0AE;
+    border: 1px solid rgba(150,126,118,0.3);
+    border-radius: 6px;
     padding: 1.2rem 1.4rem;
     flex: 1;
 }
 .compare-card-title {
     font-size: 0.75rem;
     font-weight: 700;
-    color: #94A3B8;
+    color: #5c4b45;
     margin-bottom: 0.2rem;
     display: flex;
     align-items: center;
@@ -321,48 +323,55 @@ header[data-testid="stHeader"] { background: transparent !important; }
     font-size: 0.62rem;
     font-weight: 600;
     padding: 2px 8px;
-    border-radius: 4px;
+    border-radius: 2px;
 }
 .compare-complexity {
     font-size: 0.7rem;
     font-family: 'JetBrains Mono', monospace;
-    color: #475569;
+    color: #967E76;
     margin: 0.3rem 0 0.6rem;
 }
 .compare-desc {
     font-size: 0.72rem;
-    color: #64748B;
+    color: #5c4b45;
     line-height: 1.6;
 }
 
 /* ── Streamlit widget overrides ── */
-.stSlider > div > div { background: rgba(255,255,255,0.06) !important; }
-.stSlider [data-baseweb="slider"] [role="slider"] { background: #3B82F6 !important; }
+.stSlider > div > div { background: rgba(150,126,118,0.2) !important; }
+.stSlider [data-baseweb="slider"] [role="slider"] { background: #5c4b45 !important; }
 .stSelectbox [data-baseweb="select"] > div,
 .stMultiSelect [data-baseweb="select"] > div {
-    background: rgba(255,255,255,0.04) !important;
-    border-color: rgba(255,255,255,0.08) !important;
-    border-radius: 8px !important;
+    background: #EEE3CB !important;
+    border-color: rgba(150,126,118,0.3) !important;
+    border-radius: 4px !important;
+    color: #5c4b45 !important;
 }
-label { color: #94A3B8 !important; font-size: 0.78rem !important; }
+label { color: #5c4b45 !important; font-size: 0.78rem !important; font-weight: 600 !important; }
 .stButton > button {
     width: 100% !important;
-    border-radius: 8px !important;
+    border-radius: 4px !important;
     font-weight: 600 !important;
     font-size: 0.82rem !important;
     letter-spacing: 0.03em !important;
     transition: all 0.2s !important;
+    background: #5c4b45 !important;
+    color: #EEE3CB !important;
+    border: none !important;
+}
+.stButton > button:hover {
+    background: #4a3c37 !important;
 }
 div[data-testid="stExpander"] {
-    background: rgba(255,255,255,0.02) !important;
-    border: 1px solid rgba(255,255,255,0.05) !important;
-    border-radius: 8px !important;
+    background: #B7C4CF !important;
+    border: 1px solid rgba(150,126,118,0.2) !important;
+    border-radius: 4px !important;
 }
-div[data-testid="stExpander"] summary { color: #94A3B8 !important; font-size: 0.8rem !important; }
+div[data-testid="stExpander"] summary { color: #5c4b45 !important; font-size: 0.8rem !important; font-weight: 600 !important; }
 
 /* ── Status banner ── */
 .status-banner {
-    border-radius: 10px;
+    border-radius: 4px;
     padding: 0.85rem 1.2rem;
     text-align: center;
     font-size: 0.9rem;
@@ -370,14 +379,14 @@ div[data-testid="stExpander"] summary { color: #94A3B8 !important; font-size: 0.
     margin-top: 0.5rem;
 }
 .status-banner.success {
-    background: rgba(34,197,94,0.1);
-    border: 1px solid rgba(34,197,94,0.3);
-    color: #22C55E;
+    background: rgba(107,142,107,0.15);
+    border: 1px solid rgba(107,142,107,0.4);
+    color: #4A6B4A;
 }
 .status-banner.failed {
-    background: rgba(239,68,68,0.1);
-    border: 1px solid rgba(239,68,68,0.3);
-    color: #EF4444;
+    background: rgba(160,82,82,0.15);
+    border: 1px solid rgba(160,82,82,0.4);
+    color: #8B3A3A;
 }
 
 /* ── Legend row inside map ── */
@@ -414,9 +423,9 @@ if "simulator" not in st.session_state:
 #  HELPERS
 # ─────────────────────────────────────────────
 SEVERITY_COLOR = {"GREEN": "green", "YELLOW": "yellow", "ORANGE": "orange", "RED": "red"}
-SEVERITY_EMOJI = {"GREEN": "🟢", "YELLOW": "🟡", "ORANGE": "🟠", "RED": "🔴"}
-INCIDENT_EMOJI = {
-    "NONE": "✅", "FIRE": "🔥", "GAS_LEAK": "☣️", "BLOCKED_EXIT": "🚧", "CROWD_SURGE": "👥"
+SEVERITY_ICON = {"GREEN": "check_circle", "YELLOW": "warning", "ORANGE": "warning", "RED": "error"}
+INCIDENT_ICON = {
+    "NONE": "check_circle", "FIRE": "local_fire_department", "GAS_LEAK": "coronavirus", "BLOCKED_EXIT": "front_hand", "CROWD_SURGE": "groups", "TERROR_ATTACK": "shield_lock"
 }
 
 def now_ts():
@@ -425,7 +434,9 @@ def now_ts():
 def add_event(text: str, kind: str = "move"):
     st.session_state.timeline.append((now_ts(), text, kind))
 
-def build_sensors(temperature, smoke, gas_ppm, blocked_exits, corridor_occupancies):
+def build_sensors(temperature, smoke, gas_ppm, blocked_exits, corridor_occupancies, security_threat=False, threat_zones=None):
+    if threat_zones is None:
+        threat_zones = []
     return {
         "temperature": temperature,
         "smoke": smoke,
@@ -433,6 +444,8 @@ def build_sensors(temperature, smoke, gas_ppm, blocked_exits, corridor_occupanci
         "exit_status": {ex: (0 if ex in blocked_exits else 1)
                         for ex in ["EXIT-A", "EXIT-B", "EXIT-C", "EXIT-D"]},
         "corridor_occupancies": corridor_occupancies,
+        "security_threat": security_threat,
+        "threat_zones": threat_zones
     }
 
 
@@ -474,8 +487,8 @@ NODE_TYPE_COLOR = {
 
 def draw_building_map(simulator, step_data, initialized):
     fig, ax = plt.subplots(figsize=(11, 7))
-    fig.patch.set_facecolor("#020617")
-    ax.set_facecolor("#020617")
+    fig.patch.set_facecolor("#EEE3CB")
+    ax.set_facecolor("#EEE3CB")
     ax.set_xlim(-3.0, 11.5)
     ax.set_ylim(-1.8, 8.0)
     ax.axis("off")
@@ -484,19 +497,19 @@ def draw_building_map(simulator, step_data, initialized):
     for y, label in [(3.5, "FLOOR  1"), (2.5, "FLOOR  2")]:
         pass
     # Floor 1 label
-    ax.text(-2.8, -1.4, "FLOOR 1", fontsize=7, color="#1E3A5F",
+    ax.text(-2.8, -1.4, "FLOOR 1", fontsize=7, color="#5c4b45",
             fontfamily="monospace", fontweight="bold", va="bottom")
     ax.axhline(y=-0.7, xmin=0.02, xmax=0.98,
-               color="#1E3A5F", linewidth=0.6, linestyle="--", alpha=0.5)
+               color="#967E76", linewidth=1.0, linestyle="-")
     # Floor 2 label
-    ax.text(-2.8, 6.5, "FLOOR 2", fontsize=7, color="#1E3A5F",
+    ax.text(-2.8, 6.5, "FLOOR 2", fontsize=7, color="#5c4b45",
             fontfamily="monospace", fontweight="bold", va="bottom")
     ax.axhline(y=6.7, xmin=0.02, xmax=0.98,
-               color="#1E3A5F", linewidth=0.6, linestyle="--", alpha=0.5)
+               color="#967E76", linewidth=1.0, linestyle="-")
     # Stairwell band
-    ax.axhspan(2.3, 3.7, alpha=0.04, color="#6366F1")
-    ax.text(4.0, 3.05, "STAIRWELL / C5", fontsize=6, color="#6366F1",
-            ha="center", va="bottom", fontfamily="monospace", alpha=0.8)
+    ax.axhspan(2.3, 3.7, alpha=0.3, color="#D7C0AE")
+    ax.text(4.0, 3.05, "STAIRWELL / C5", fontsize=6, color="#5c4b45",
+            ha="center", va="bottom", fontfamily="monospace", fontweight="bold")
 
     # ── Build networkx graph for edge drawing ──
     G = nx.DiGraph()
@@ -521,18 +534,16 @@ def draw_building_map(simulator, step_data, initialized):
         x1, y1 = MAP_POS[u]
         x2, y2 = MAP_POS[v]
         if (u, v) in path_edges:
-            # Active route – bright green
-            ax.plot([x1, x2], [y1, y2], color="#22C55E", linewidth=3.5,
-                    zorder=2, solid_capstyle="round",
-                    path_effects=[pe.SimpleLineShadow(shadow_color="#22C55E", alpha=0.25, offset=(0, 0)),
-                                  pe.Normal()])
+            # Active route – solid green
+            ax.plot([x1, x2], [y1, y2], color="#4A6B4A", linewidth=4.5,
+                    zorder=2, solid_capstyle="round")
         elif initialized and (graph_state.nodes.get(u, {}).get("blocked") or
                                graph_state.nodes.get(v, {}).get("blocked")):
-            # Blocked edge – dashed crimson
-            ax.plot([x1, x2], [y1, y2], color="#7F1D1D", linewidth=1.2,
-                    linestyle="--", zorder=1, alpha=0.7)
+            # Blocked edge – solid red thin
+            ax.plot([x1, x2], [y1, y2], color="#8B3A3A", linewidth=1.5,
+                    zorder=1, alpha=0.9)
         else:
-            ax.plot([x1, x2], [y1, y2], color="#1E293B", linewidth=1.3,
+            ax.plot([x1, x2], [y1, y2], color="#967E76", linewidth=1.5,
                     zorder=1, alpha=0.9)
 
     # ── Draw nodes ──
@@ -552,67 +563,63 @@ def draw_building_map(simulator, step_data, initialized):
         is_agent = (node == agent_pos)
         is_path  = (node in active_path) if active_path else False
 
-        # ── Glow layers ──
-        if is_agent:
-            for r, a in [(0.38, 0.08), (0.26, 0.14), (0.18, 0.20)]:
-                ax.scatter(nx_, ny_, s=(r * 800) ** 1.1, color="#3B82F6",
-                           alpha=a, zorder=3, linewidths=0)
-        elif blocked:
-            for r, a in [(0.32, 0.10), (0.22, 0.18)]:
-                ax.scatter(nx_, ny_, s=(r * 800) ** 1.1, color="#EF4444",
-                           alpha=a, zorder=3, linewidths=0)
-        elif hazard > 0.5:
-            for r, a in [(0.30, 0.12), (0.20, 0.20)]:
-                ax.scatter(nx_, ny_, s=(r * 800) ** 1.1, color="#EF4444",
-                           alpha=a * hazard, zorder=3, linewidths=0)
-        elif hazard > 0.0:
-            ax.scatter(nx_, ny_, s=15000 * hazard, color="#F97316",
-                       alpha=0.18, zorder=3, linewidths=0)
-        elif crowd > 0.5:
-            ax.scatter(nx_, ny_, s=12000 * crowd, color="#F59E0B",
-                       alpha=0.22, zorder=3, linewidths=0)
-        elif is_path and ntype == "exit":
-            ax.scatter(nx_, ny_, s=8000, color="#22C55E", alpha=0.15, zorder=3, linewidths=0)
-
         # ── Node body ──
         if ntype == "exit":
-            base_size = 320
+            base_size = 350
             if blocked:
-                fc = "#3B0000"
-                ec = "#EF4444"
+                fc = "#8B3A3A"
+                ec = "#8B3A3A"
             elif is_path:
-                fc = "#052E16"
-                ec = "#22C55E"
+                fc = "#4A6B4A"
+                ec = "#4A6B4A"
             else:
-                fc = "#052E16"
-                ec = "#166534"
+                fc = "#D7C0AE"
+                ec = "#967E76"
         elif ntype == "corridor":
-            base_size = 220
-            fc = "#0F1A2B"
-            ec = "#334155"
+            base_size = 250
+            fc = "#EEE3CB"
+            ec = "#967E76"
         else:  # room
-            base_size = 280
+            base_size = 350
             if is_agent:
-                fc = "#1E3A6E"
-                ec = "#3B82F6"
+                fc = "#5c4b45"
+                ec = "#5c4b45"
             elif blocked:
-                fc = "#3B0000"
-                ec = "#EF4444"
+                fc = "#A05252"
+                ec = "#8B3A3A"
             elif hazard > 0.5:
-                fc = "#3B0A00"
-                ec = "#EF4444"
+                fc = "#C18B47"
+                ec = "#C18B47"
             elif hazard > 0.0:
-                fc = "#2D1B00"
-                ec = "#F97316"
+                fc = "#E2C391"
+                ec = "#C18B47"
             elif crowd > 0.5:
-                fc = "#2D2000"
-                ec = "#F59E0B"
+                fc = "#D7C0AE"
+                ec = "#967E76"
             elif is_path:
-                fc = "#0A2A1A"
-                ec = "#22C55E"
+                fc = "#6B8E6B"
+                ec = "#4A6B4A"
             else:
-                fc = "#0F1E33"
-                ec = "#1E3A5F"
+                fc = "#B7C4CF"
+                ec = "#967E76"
+
+        ax.scatter(nx_, ny_, s=base_size, color=fc, edgecolors=ec,
+                   linewidths=2.0, zorder=5, marker="s" if ntype == "exit" else "o")
+
+        # ── Blocked X marker / Agent ──
+        if blocked:
+            ax.text(nx_, ny_, "✕", fontsize=10, ha="center", va="center",
+                    color="#EEE3CB", fontweight="bold", zorder=7)
+        elif is_agent:
+            ax.text(nx_, ny_, "●", fontsize=9, ha="center", va="center",
+                    color="#EEE3CB", zorder=7)
+
+        # ── Node label ──
+        label_color = "#EEE3CB" if is_agent or blocked or (is_path and ntype == "exit") else "#5c4b45"
+        offset_y = -0.45 if ntype != "exit" else 0.50
+        ax.text(nx_, ny_ + offset_y, node, fontsize=7.5, ha="center", va="center",
+                color="#5c4b45", fontweight="bold",
+                fontfamily="monospace", zorder=8)
 
         ax.scatter(nx_, ny_, s=base_size, color=fc, edgecolors=ec,
                    linewidths=1.8, zorder=5, marker="s" if ntype == "exit" else "o")
@@ -638,18 +645,18 @@ def draw_building_map(simulator, step_data, initialized):
 
     # ── Embedded legend ──
     legend_items = [
-        (mpatches.Patch(facecolor="#1E3A6E", edgecolor="#3B82F6", label="Agent")),
-        (mpatches.Patch(facecolor="#052E16", edgecolor="#22C55E", label="Safe Exit")),
-        (mpatches.Patch(facecolor="#3B0000", edgecolor="#EF4444", label="Blocked")),
-        (mpatches.Patch(facecolor="#3B0A00", edgecolor="#EF4444", label="Fire Hazard")),
-        (mpatches.Patch(facecolor="#2D1B00", edgecolor="#F97316", label="Gas Hazard")),
-        (mpatches.Patch(facecolor="#2D2000", edgecolor="#F59E0B", label="Crowd Surge")),
+        (mpatches.Patch(facecolor="#5c4b45", edgecolor="#5c4b45", label="Agent Position")),
+        (mpatches.Patch(facecolor="#4A6B4A", edgecolor="#4A6B4A", label="Safe Exit / Route")),
+        (mpatches.Patch(facecolor="#A05252", edgecolor="#8B3A3A", label="Threat / Restricted Area")),
+        (mpatches.Patch(facecolor="#C18B47", edgecolor="#C18B47", label="Hazard Zone")),
+        (mpatches.Patch(facecolor="#D7C0AE", edgecolor="#967E76", label="Congestion Area")),
+        (mpatches.Patch(facecolor="#B7C4CF", edgecolor="#967E76", label="Safe Zone")),
     ]
     leg = ax.legend(handles=legend_items, loc="lower center",
-                    ncol=6, frameon=True, fancybox=True,
-                    framealpha=0.85, edgecolor="#1E293B",
-                    fontsize=6.5, labelcolor="#94A3B8",
-                    facecolor="#0F172A",
+                    ncol=3, frameon=True, fancybox=True,
+                    framealpha=0.95, edgecolor="#967E76",
+                    fontsize=7, labelcolor="#5c4b45",
+                    facecolor="#EEE3CB",
                     bbox_to_anchor=(0.5, -0.22))
 
     plt.tight_layout(pad=0)
@@ -669,8 +676,8 @@ inc_type, inc_sev, inc_affected, inc_action = (
 )
 
 sev_cls    = SEVERITY_COLOR.get(inc_sev, "green")
-sev_emoji  = SEVERITY_EMOJI.get(inc_sev, "🟢")
-inc_emoji  = INCIDENT_EMOJI.get(inc_type, "✅")
+sev_icon   = SEVERITY_ICON.get(inc_sev, "check_circle")
+inc_icon   = INCIDENT_ICON.get(inc_type, "check_circle")
 agent_node = simulator.agent_position if initialized else "—"
 algo_label = st.session_state.get("active_algo", "—")
 step_num   = simulator.step_index if initialized else 0
@@ -678,7 +685,7 @@ step_num   = simulator.step_index if initialized else 0
 st.markdown(f"""
 <div class="cmd-header">
   <div class="cmd-logo">
-    <div class="cmd-logo-icon">🚨</div>
+    <div class="cmd-logo-icon material-symbols-outlined">security</div>
     <div>
       <div class="cmd-logo-text">Emergency Command Center</div>
       <div class="cmd-logo-sub">Hybrid Incident Response Agent · Real-time Evacuation Simulation</div>
@@ -687,23 +694,23 @@ st.markdown(f"""
   <div class="metric-strip">
     <div class="pill pill-{sev_cls}">
       <div class="pill-label">Incident</div>
-      <div class="pill-value">{inc_emoji} {inc_type if inc_type != 'NONE' else 'NORMAL'}</div>
+      <div class="pill-value"><span class="material-symbols-outlined">{inc_icon}</span> {inc_type if inc_type != 'NONE' else 'NORMAL'}</div>
     </div>
     <div class="pill pill-{sev_cls}">
       <div class="pill-label">Severity</div>
-      <div class="pill-value">{sev_emoji} {inc_sev}</div>
+      <div class="pill-value"><span class="material-symbols-outlined">{sev_icon}</span> {inc_sev}</div>
     </div>
     <div class="pill pill-blue">
       <div class="pill-label">Algorithm</div>
-      <div class="pill-value">⚡ {algo_label if algo_label != '—' else 'Not Set'}</div>
+      <div class="pill-value"><span class="material-symbols-outlined">route</span> {algo_label if algo_label != '—' else 'Not Set'}</div>
     </div>
     <div class="pill pill-blue">
       <div class="pill-label">Agent Position</div>
-      <div class="pill-value">📍 {agent_node}</div>
+      <div class="pill-value"><span class="material-symbols-outlined">location_on</span> {agent_node}</div>
     </div>
     <div class="pill">
       <div class="pill-label">Simulation Step</div>
-      <div class="pill-value">{"🔴 LIVE" if initialized and not simulator.finished else ("✅ DONE" if initialized else "⏸ IDLE")} · {step_num}</div>
+      <div class="pill-value">{"LIVE" if initialized and not simulator.finished else ("DONE" if initialized else "IDLE")} · {step_num}</div>
     </div>
   </div>
 </div>
@@ -716,8 +723,8 @@ st.markdown(f"""
 with st.sidebar:
     st.markdown("""
     <div style="padding: 1rem 0 0.5rem; text-align:center;">
-      <div style="font-size:0.65rem; font-weight:700; color:#475569; letter-spacing:0.15em; text-transform:uppercase;">
-        ⚙️ Simulation Configuration
+      <div style="font-size:0.65rem; font-weight:700; color:#5c4b45; letter-spacing:0.15em; text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:5px;">
+        <span class="material-symbols-outlined" style="font-size: 1.1rem;">settings</span> Simulation Configuration
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -734,11 +741,12 @@ with st.sidebar:
     st.markdown('<div class="sidebar-section-title">INCIDENT SCENARIO PRESET</div>', unsafe_allow_html=True)
 
     PRESETS = [
-        ("Normal Scenario",            "🟢", "All systems operational"),
-        ("Fire in East Wing",          "🔥", "R5 / EXIT-B affected"),
-        ("Gas Leak in West Wing",      "☣️",  "C1 & C3 at risk"),
-        ("Blocked Corridor/Exits",     "🚧", "EXIT-B obstructed"),
-        ("High Occupancy Crowd Surge", "👥", "C2 & C4 congested"),
+        ("Normal Scenario",            ":material/check_circle:", "All systems operational"),
+        ("Fire Incident",              ":material/local_fire_department:", "R5 / EXIT-B affected"),
+        ("Gas Leak",                   ":material/coronavirus:",  "C1 & C3 at risk"),
+        ("Blocked Exit",               ":material/front_hand:", "EXIT-B obstructed"),
+        ("Crowd Surge",                ":material/groups:", "C2 & C4 congested"),
+        ("Security Threat / Terror Attack", ":material/shield_lock:", "Lockdown in East Wing"),
     ]
 
     preset_names = [p[0] for p in PRESETS]
@@ -757,41 +765,53 @@ with st.sidebar:
     # ── Sensor defaults from preset ──
     temp_default  = 22.0;  smoke_default = 0.05; gas_default = 15.0
     blocked_exits_default = []; high_occ = {}
+    sec_threat = False; threat_zones_default = []
 
-    if incident_selection == "Fire in East Wing":
+    if incident_selection == "Fire Incident":
         temp_default = 72.0; smoke_default = 0.88
-    elif incident_selection == "Gas Leak in West Wing":
+    elif incident_selection == "Gas Leak":
         gas_default = 480.0
-    elif incident_selection == "Blocked Corridor/Exits":
+    elif incident_selection == "Blocked Exit":
         blocked_exits_default = ["EXIT-B"]
-    elif incident_selection == "High Occupancy Crowd Surge":
+    elif incident_selection == "Crowd Surge":
         high_occ = {"C2": 95.0, "C4": 88.0}
+    elif incident_selection == "Security Threat / Terror Attack":
+        sec_threat = True
+        threat_zones_default = ["C5", "R7", "R8"]
 
     # ── Fine sensor controls ──
     st.markdown('<div class="sidebar-section-title">SENSOR OVERRIDE</div>', unsafe_allow_html=True)
 
-    with st.expander("🔥 Fire Sensors"):
+    with st.expander("Fire Sensors"):
         temperature = st.slider("Temperature (°C)", 15.0, 100.0, float(temp_default), 1.0)
         smoke       = st.slider("Smoke Density",     0.0,   1.0, float(smoke_default), 0.05)
 
-    with st.expander("☣️ Gas Sensor"):
+    with st.expander("Gas Sensor"):
         gas_ppm = st.slider("Gas Concentration (PPM)", 10.0, 600.0, float(gas_default), 10.0)
 
-    with st.expander("🚧 Exit Blockages"):
+    with st.expander("Exit Blockages"):
         blocked_exits = st.multiselect(
             "Blocked Exits",
             ["EXIT-A", "EXIT-B", "EXIT-C", "EXIT-D"],
             default=blocked_exits_default,
         )
 
-    with st.expander("👥 Corridor Occupancy"):
+    with st.expander("Corridor Occupancy"):
         corridor_occupancies = {}
         for c in ["C1", "C2", "C3", "C4", "C5"]:
             corridor_occupancies[c] = st.slider(
                 f"{c} (%)", 0.0, 100.0, float(high_occ.get(c, 25.0)), 5.0
             )
 
-    sensors = build_sensors(temperature, smoke, gas_ppm, blocked_exits, corridor_occupancies)
+    with st.expander("Security Threat"):
+        security_threat = st.toggle("Active Lockdown", value=sec_threat)
+        threat_zones = st.multiselect(
+            "Threat Zones",
+            [f"R{i}" for i in range(1,11)] + ["C1", "C2", "C3", "C4", "C5"],
+            default=threat_zones_default
+        )
+
+    sensors = build_sensors(temperature, smoke, gas_ppm, blocked_exits, corridor_occupancies, security_threat, threat_zones)
 
     # ── Action buttons ──
     st.markdown('<div class="sidebar-section-title">SIMULATION CONTROL</div>', unsafe_allow_html=True)
@@ -818,7 +838,7 @@ with st.sidebar:
         inc2 = sim2.current_incident
         if inc2[0] != "NONE":
             kind2 = {"FIRE": "fire", "GAS_LEAK": "gas",
-                     "BLOCKED_EXIT": "block", "CROWD_SURGE": "crowd"}.get(inc2[0], "move")
+                     "BLOCKED_EXIT": "block", "CROWD_SURGE": "crowd", "TERROR_ATTACK": "terror"}.get(inc2[0], "move")
             add_event(f"{inc2[0].replace('_', ' ').title()} detected · {inc2[1]}", kind2)
         for n in inc2[2]:
             add_event(f"Node {n} affected", "block")
@@ -833,16 +853,16 @@ with st.sidebar:
         inc3 = simulator.current_incident
         if inc3[0] != "NONE":
             kind3 = {"FIRE": "fire", "GAS_LEAK": "gas",
-                     "BLOCKED_EXIT": "block", "CROWD_SURGE": "crowd"}.get(inc3[0], "move")
+                     "BLOCKED_EXIT": "block", "CROWD_SURGE": "crowd", "TERROR_ATTACK": "terror"}.get(inc3[0], "move")
             add_event(f"{inc3[0].replace('_', ' ').title()} active · Severity {inc3[1]}", kind3)
         add_event(f"Agent moved to {simulator.agent_position}", "move")
         if step_res2 and step_res2["active_path"]:
             add_event(f"Route → {step_res2['active_path'][-1]}", "route")
         if simulator.finished:
             if simulator.agent_position in simulator.graph.get_exits():
-                add_event(f"✅ Evacuated via {simulator.agent_position}", "success")
+                add_event(f"[ SUCCESS ] Evacuated via {simulator.agent_position}", "success")
             else:
-                add_event("❌ Evacuation failed — all exits blocked", "block")
+                add_event("[ FAILED ] Evacuation failed — all exits blocked", "block")
         st.rerun()
 
 
@@ -870,7 +890,7 @@ with left_col:
     # Route summary card
     st.markdown("""
     <div class="panel-card">
-      <div class="panel-card-title">🗺 ROUTE SUMMARY</div>
+      <div class="panel-card-title"><span class="material-symbols-outlined" style="font-size: 1.2rem;">map</span> ROUTE SUMMARY</div>
     """, unsafe_allow_html=True)
 
     if initialized and step_data:
@@ -906,7 +926,7 @@ with left_col:
     # Simulation state card
     st.markdown("""
     <div class="panel-card">
-      <div class="panel-card-title">⚡ SIMULATION STATE</div>
+      <div class="panel-card-title"><span class="material-symbols-outlined" style="font-size: 1.2rem;">memory</span> SIMULATION STATE</div>
     """, unsafe_allow_html=True)
 
     finished_str = "COMPLETE" if (initialized and simulator.finished) else \
@@ -946,10 +966,10 @@ with left_col:
 
     if initialized and simulator.finished:
         if simulator.agent_position in simulator.graph.get_exits():
-            st.markdown(f'<div class="status-banner success">🎉 Evacuated via {simulator.agent_position}</div>',
+            st.markdown(f'<div class="status-banner success">[ SUCCESS ] Evacuated via {simulator.agent_position}</div>',
                         unsafe_allow_html=True)
         else:
-            st.markdown('<div class="status-banner failed">❌ All exits unreachable</div>',
+            st.markdown('<div class="status-banner failed">[ FAILED ] All exits unreachable</div>',
                         unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
@@ -957,15 +977,15 @@ with left_col:
     # Incident info card
     st.markdown("""
     <div class="panel-card">
-      <div class="panel-card-title">🚨 ACTIVE INCIDENT</div>
+      <div class="panel-card-title"><span class="material-symbols-outlined" style="font-size: 1.2rem;">warning</span> ACTIVE INCIDENT</div>
     """, unsafe_allow_html=True)
 
-    sev_color_map = {"GREEN": "#22C55E", "YELLOW": "#F59E0B", "ORANGE": "#F97316", "RED": "#EF4444"}
-    sev_c = sev_color_map.get(inc_sev, "#22C55E")
+    sev_color_map = {"GREEN": "#6B8E6B", "YELLOW": "#C18B47", "ORANGE": "#C18B47", "RED": "#A05252"}
+    sev_c = sev_color_map.get(inc_sev, "#6B8E6B")
     st.markdown(f"""
     <div class="stat-row">
       <span class="stat-row-label">Type</span>
-      <span class="stat-row-value">{INCIDENT_EMOJI.get(inc_type, '')} {inc_type}</span>
+      <span class="stat-row-value"><span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: bottom;">{INCIDENT_ICON.get(inc_type, '')}</span> {inc_type}</span>
     </div>
     <div class="stat-row">
       <span class="stat-row-label">Severity</span>
@@ -982,11 +1002,11 @@ with left_col:
 # ────────────── CENTER: Building Map ──────────
 with map_col:
     st.markdown("""
-    <div style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.06);
-                border-radius:14px; padding:1rem 1.25rem 0.5rem; margin-bottom:0.75rem;">
-      <div style="font-size:0.65rem; font-weight:700; color:#475569; letter-spacing:0.15em;
-                  text-transform:uppercase; margin-bottom:0.75rem;">
-        🏢 BUILDING FLOORPLAN  ·  LIVE EVACUATION MAP
+    <div style="background:#D7C0AE; border:1px solid rgba(150,126,118,0.3);
+                border-radius:6px; padding:1rem 1.25rem 0.5rem; margin-bottom:0.75rem;">
+      <div style="font-size:0.65rem; font-weight:700; color:#5c4b45; letter-spacing:0.15em;
+                  text-transform:uppercase; margin-bottom:0.75rem; display:flex; align-items:center; gap:5px;">
+        <span class="material-symbols-outlined" style="font-size: 1.1rem;">domain</span> BUILDING FLOORPLAN  ·  LIVE EVACUATION MAP
       </div>
     """, unsafe_allow_html=True)
 
@@ -996,8 +1016,8 @@ with map_col:
 
     if not initialized:
         st.markdown("""
-        <div style="text-align:center; color:#334155; font-size:0.8rem; padding:0.5rem 0;">
-          ← Configure scenario and press <strong style="color:#3B82F6">Start / Reset</strong> to begin simulation
+        <div style="text-align:center; color:#5c4b45; font-size:0.8rem; padding:0.5rem 0;">
+          ← Configure scenario and press <strong style="color:#5c4b45">Start / Reset</strong> to begin simulation
         </div>
         """, unsafe_allow_html=True)
 
@@ -1011,15 +1031,15 @@ with map_col:
             chips_html += f'<div class="evt-chip {kind}"><div class="evt-time">{ts}</div><div class="evt-text">{text}</div></div>'
         st.markdown(f"""
         <div class="timeline-outer">
-          <div class="timeline-title">📡 EVENT TIMELINE</div>
+          <div class="timeline-title"><span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: bottom;">history</span> EVENT TIMELINE</div>
           <div class="timeline-scroll">{chips_html}</div>
         </div>
         """, unsafe_allow_html=True)
     else:
         st.markdown("""
         <div class="timeline-outer">
-          <div class="timeline-title">📡 EVENT TIMELINE</div>
-          <div style="color:#334155; font-size:0.75rem; padding:0.4rem 0;">
+          <div class="timeline-title"><span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: bottom;">history</span> EVENT TIMELINE</div>
+          <div style="color:#5c4b45; font-size:0.75rem; padding:0.4rem 0;">
             Events will appear here as the simulation progresses…
           </div>
         </div>
@@ -1030,13 +1050,13 @@ with map_col:
 with right_col:
     st.markdown("""
     <div class="panel-card">
-      <div class="panel-card-title">🧠 ALGORITHM COMPARISON</div>
+      <div class="panel-card-title"><span class="material-symbols-outlined" style="font-size: 1.2rem;">compare_arrows</span> ALGORITHM COMPARISON</div>
     """, unsafe_allow_html=True)
 
     ALGO_META = {
-        "A*":  {"full": "A* Search",             "color": "#3B82F6", "opt": "OPTIMAL"},
-        "BFS": {"full": "Breadth-First Search",  "color": "#8B5CF6", "opt": "HOP-OPT"},
-        "DFS": {"full": "Depth-First Search",    "color": "#F59E0B", "opt": "NON-OPT"},
+        "A*":  {"full": "A* Search",             "color": "#5c4b45", "opt": "OPTIMAL"},
+        "BFS": {"full": "Breadth-First Search",  "color": "#6B8E6B", "opt": "HOP-OPT"},
+        "DFS": {"full": "Depth-First Search",    "color": "#A05252", "opt": "NON-OPT"},
     }
 
     if initialized and step_data:
@@ -1089,13 +1109,13 @@ with right_col:
                 <div class="algo-metric-item">Cost<br><span>{cost_str}</span></div>
                 <div class="algo-metric-item">Explored<br><span>{explored}</span></div>
                 <div class="algo-metric-item">Time<br><span>{time_str}</span></div>
-                <div class="algo-metric-item">Optimality<br><span style="color:#94A3B8">{meta['opt']}</span></div>
+                <div class="algo-metric-item">Optimality<br><span style="color:#5c4b45">{meta['opt']}</span></div>
               </div>
             </div>
             """, unsafe_allow_html=True)
     else:
         st.markdown("""
-        <div style="color:#334155; font-size:0.78rem; padding:0.5rem 0;">
+        <div style="color:#5c4b45; font-size:0.78rem; padding:0.5rem 0;">
           Algorithm metrics will populate after simulation starts.
         </div>
         """, unsafe_allow_html=True)
@@ -1124,24 +1144,24 @@ with right_col:
 # ─────────────────────────────────────────────
 st.markdown("---")
 st.markdown("""
-<div style="font-size:0.65rem; font-weight:700; color:#475569; letter-spacing:0.15em;
-            text-transform:uppercase; margin-bottom:1rem;">
-  🎓 SEARCH ALGORITHM TRADE-OFF ANALYSIS
+<div style="font-size:0.65rem; font-weight:700; color:#5c4b45; letter-spacing:0.15em;
+            text-transform:uppercase; margin-bottom:1rem; display:flex; align-items:center; gap:5px;">
+  <span class="material-symbols-outlined" style="font-size: 1.2rem;">school</span> SEARCH ALGORITHM TRADE-OFF ANALYSIS
 </div>
 """, unsafe_allow_html=True)
 
 col_a, col_b, col_c = st.columns(3)
 
 compare_cards = [
-    (col_a, "A* Search", "#3B82F6", "OPTIMAL", "O(E log V)", "O(V)",
+    (col_a, "A* Search", "#5c4b45", "OPTIMAL", "O(E log V)", "O(V)",
      "Computes the globally safest and shortest route by incorporating dynamic edge weights "
      "(distance + hazard × 3 + crowd × 2) into an admissible heuristic. Best choice for "
      "real emergencies where both physical distance and threat severity must be minimized."),
-    (col_b, "Breadth-First Search", "#8B5CF6", "HOP-OPT", "O(V + E)", "O(V)",
+    (col_b, "Breadth-First Search", "#6B8E6B", "HOP-OPT", "O(V + E)", "O(V)",
      "Finds the path crossing the fewest intermediate nodes. Optimal only for hop count — "
      "completely ignores fire hazard scores, gas leak penalties, and crowd congestion. "
      "Suitable only when all corridors are threat-free and uniformly traversable."),
-    (col_c, "Depth-First Search", "#F59E0B", "NON-OPT", "O(V + E)", "O(V)",
+    (col_c, "Depth-First Search", "#A05252", "NON-OPT", "O(V + E)", "O(V)",
      "Explores deep branches and returns the first reachable exit without evaluating "
      "path costs. Highly volatile — may route the agent through active fire or "
      "gas zones. Useful only for basic connectivity checks, not safe evacuation."),
@@ -1149,11 +1169,11 @@ compare_cards = [
 
 for col, title, color, opt_label, time_c, space_c, desc in compare_cards:
     with col:
-        opt_bg  = {"OPTIMAL": "rgba(34,197,94,0.15)",  "HOP-OPT": "rgba(139,92,246,0.15)",
-                   "NON-OPT": "rgba(245,158,11,0.15)"}[opt_label]
-        opt_col = {"OPTIMAL": "#22C55E", "HOP-OPT": "#A78BFA", "NON-OPT": "#F59E0B"}[opt_label]
+        opt_bg  = {"OPTIMAL": "rgba(92,75,69,0.15)",  "HOP-OPT": "rgba(107,142,107,0.15)",
+                   "NON-OPT": "rgba(160,82,82,0.15)"}[opt_label]
+        opt_col = {"OPTIMAL": "#5c4b45", "HOP-OPT": "#4A6B4A", "NON-OPT": "#8B3A3A"}[opt_label]
         st.markdown(f"""
-        <div class="compare-card" style="border-color:rgba({','.join(str(int(color.lstrip('#')[i:i+2], 16)) for i in (0,2,4))},0.25);">
+        <div class="compare-card" style="border-top: 3px solid {color};">
           <div class="compare-card-title">
             <span style="color:{color}; font-size:0.85rem; font-weight:700;">{title}</span>
             <span class="compare-opt-tag" style="background:{opt_bg}; color:{opt_col};">{opt_label}</span>
@@ -1167,9 +1187,9 @@ for col, title, color, opt_label, time_c, space_c, desc in compare_cards:
 
 st.markdown("""
 <div style="margin:1.5rem 0 0.5rem; padding:1rem 1.25rem;
-            background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.05);
-            border-radius:10px; font-size:0.75rem; color:#64748B; line-height:1.8;">
-  <strong style="color:#94A3B8;">Evacuation Context:</strong>
+            background:#D7C0AE; border:1px solid rgba(150,126,118,0.3);
+            border-radius:6px; font-size:0.75rem; color:#5c4b45; line-height:1.8;">
+  <strong style="color:#5c4b45;">Evacuation Context:</strong>
   In a real-world emergency response system, routing must simultaneously optimize for
   <em>physical safety</em> (avoiding hazard zones), <em>speed</em> (minimizing travel time),
   and <em>congestion</em> (bypassing overcrowded corridors). A* Search integrates all three
